@@ -34,12 +34,14 @@ Sub MoveItems()
  Dim myItem As Object
  
  Set myNameSpace = Application.GetNamespace("MAPI")
- Set myInbox1 = myNameSpace.GetDefaultFolder(olFolderInbox).Parent
+ 
  Set myInbox = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("Conversation History")
  Set myItems = myInbox.Items
+ 
  Set myDestFolder = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("__3 Years (36 Months)")
- Set myDestFolder2 = myDestFolder.Folders("ConversationHistory")
- Set myItem = myItems.Find("[SenderName] <> 'Dan Wilson'")
+ Set myDestFolderThreeYears = myDestFolder.Folders("ConversationHistory")
+ 
+ Set myItem = myItems.Find("[SenderName] <> 'somebody'")
  While TypeName(myItem) <> "Nothing"
  myItem.Move myDestFolder2
  Set myItem = myItems.FindNext
