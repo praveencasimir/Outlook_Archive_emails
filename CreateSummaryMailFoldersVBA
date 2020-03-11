@@ -1,0 +1,41 @@
+Option Explicit
+Sub GetFoldersList()
+    On Error GoTo On_Error
+     
+    Dim Report As String
+    Dim Folder As Outlook.Folder
+        
+    For Each Folder In Application.Session.Folders
+        Report = Report & "---------------------------------------------------------------------------" & vbCrLf
+        Call RecurseFolders(Folder, "", Report)
+    Next
+    Call CreateReportEmail("Outlook Folders List", Report)
+     
+Exiting:
+    Exit Sub
+On_Error:
+    MsgBox "error=" & Err.Number & " " & Err.Description
+End Sub
+Sub RecurseFolders(CurrentFolder As Outlook.Folder, TabChars, ByRef Report As String)
+    Dim SubFolder As Outlook.Folder
+    Dim FolderName, StoreName As String
+     
+    FolderName = CurrentFolder.Name
+    StoreName = CurrentFolder.Store.DisplayName
+     
+    Report = Report & TabChars & FolderName & " (Store: " & StoreName & ")" & vbCrLf
+     
+    For Each SubFolder In CurrentFolder.Folders
+        Call RecurseFolders(SubFolder, TabChars & vbTab, Report)
+    Next SubFolder
+End Sub
+Sub CreateReportEmail(Title As String, Report As String)
+    Dim aMail As MailItem
+     
+    Set aMail = Application.CreateItem(olMailItem)
+         
+    aMail.Subject = Title
+    aMail.Body = Report
+     
+    aMail.Display
+End Sub
