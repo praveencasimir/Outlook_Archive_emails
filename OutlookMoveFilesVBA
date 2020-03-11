@@ -4,7 +4,7 @@ Declare Function KillTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As L
 Public TimerID As Long 'Need a timer ID to eventually turn off the timer. If the timer ID <> 0 then the timer is running
 
 Public Sub ActivateTimer(ByVal nMinutes As Long)
-  nMinutes = nMinutes * 1000 * 60 * 30 'The SetTimer call accepts milliseconds, so convert to minutes
+  nMinutes = nMinutes * 1000 * 60 * 30  'The SetTimer call accepts milliseconds, so convert to minutes - 30 minutes
   If TimerID <> 0 Then Call DeactivateTimer 'Check to see if timer is running before call to SetTimer
   TimerID = SetTimer(0, 0, nMinutes, AddressOf TriggerTimer)
   If TimerID = 0 Then
@@ -24,9 +24,14 @@ End Sub
 
 Public Sub TriggerTimer(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idevent As Long, ByVal Systime As Long)
   MsgBox "The TriggerTimer function has been automatically called!"
-  MoveItems
+  MoveConversationHistoryItems
+  MoveAlertItems
+  MoveAlertCompassItems
+  MoveDeletedItems
+  MoveSentItems
+  MoveInboxItems
 End Sub
-Sub MoveItems()
+Sub MoveConversationHistoryItems()
  Dim myNameSpace As Outlook.NameSpace
  Dim myInbox As Outlook.Folder
  Dim myDestFolder As Outlook.Folder
@@ -43,7 +48,143 @@ Sub MoveItems()
  
  Set myItem = myItems.Find("[SenderName] <> 'somebody'")
  While TypeName(myItem) <> "Nothing"
- myItem.Move myDestFolder2
+ myItem.Move myDestFolderThreeYears
  Set myItem = myItems.FindNext
  Wend
 End Sub
+
+Sub MoveAlertItems()
+ Dim myNameSpace As Outlook.NameSpace
+ Dim myInbox As Outlook.Folder
+ Dim myDestFolder As Outlook.Folder
+ Dim myItems As Outlook.Items
+ Dim myItem As Object
+ 
+ Set myNameSpace = Application.GetNamespace("MAPI")
+ 
+ Set myInbox = myNameSpace.GetDefaultFolder(olFolderInbox).Folders("Alerts")
+ Set myItems = myInbox.Items
+ 
+ Set myDestFolder = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("__3 Years (36 Months)")
+ Set myDestFolderThreeYears = myDestFolder.Folders("Alerts")
+ 
+ Set myItem = myItems.Find("[SenderName] <> 'somebody'")
+ While TypeName(myItem) <> "Nothing"
+ myItem.Move myDestFolderThreeYears
+ Set myItem = myItems.FindNext
+ Wend
+End Sub
+
+Sub MoveAlertCompassItems()
+
+ Dim myNameSpace As Outlook.NameSpace
+ Dim myInbox As Outlook.Folder
+ Dim myDestFolder As Outlook.Folder
+ Dim myItems As Outlook.Items
+ Dim myItem As Object
+ 
+ Set myNameSpace = Application.GetNamespace("MAPI")
+ 
+ Set myInbox = myNameSpace.GetDefaultFolder(olFolderInbox).Folders("Alerts").Folders("Alerts-Com2passtest")
+ Set myItems = myInbox.Items
+ 
+ Set myDestFolder = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("__3 Years (36 Months)")
+ Set myDestFolderThreeYears = myDestFolder.Folders("Alerts")
+ 
+ Set myItem = myItems.Find("[SenderName] <> 'somebody'")
+ While TypeName(myItem) <> "Nothing"
+ myItem.Move myDestFolderThreeYears
+ Set myItem = myItems.FindNext
+ Wend
+End Sub
+
+Sub MoveDeletedItems()
+
+ Dim myNameSpace As Outlook.NameSpace
+ Dim myInbox As Outlook.Folder
+ Dim myDestFolder As Outlook.Folder
+ Dim myItems As Outlook.Items
+ Dim myItem As Object
+ Dim Filter As String
+ Dim DateDiff As Long
+ 
+ Set myNameSpace = Application.GetNamespace("MAPI")
+ 
+ Set myInbox = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("Deleted Items")
+ Set myItems = myInbox.Items
+ 
+ Set myDestFolder = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("__3 Years (36 Months)")
+ Set myDestFolderThreeYears = myDestFolder.Folders("deleted")
+ DateDiff = Now - 30
+ Filter = "[SentOn]  < '" & Month(DateDiff) & _
+ "/" & Day(DateDiff) & _
+ "/" & Year(DateDiff) & "'"
+                         
+ 
+ Set myItem = myItems.Find(Filter)
+ While TypeName(myItem) <> "Nothing"
+ myItem.Move myDestFolderThreeYears
+ Set myItem = myItems.FindNext
+ Wend
+End Sub
+
+Sub MoveSentItems()
+
+ Dim myNameSpace As Outlook.NameSpace
+ Dim myInbox As Outlook.Folder
+ Dim myDestFolder As Outlook.Folder
+ Dim myItems As Outlook.Items
+ Dim myItem As Object
+ Dim Filter As String
+ Dim DateDiff As Long
+ 
+ Set myNameSpace = Application.GetNamespace("MAPI")
+ 
+ Set myInbox = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("Sent Items")
+ Set myItems = myInbox.Items
+ 
+ Set myDestFolder = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("__3 Years (36 Months)")
+ Set myDestFolderThreeYears = myDestFolder.Folders("SentItems")
+ DateDiff = Now - 30
+ Filter = "[SentOn]  < '" & Month(DateDiff) & _
+ "/" & Day(DateDiff) & _
+ "/" & Year(DateDiff) & "'"
+                         
+ 
+ Set myItem = myItems.Find(Filter)
+ While TypeName(myItem) <> "Nothing"
+ myItem.Move myDestFolderThreeYears
+ Set myItem = myItems.FindNext
+ Wend
+End Sub
+
+Sub MoveInboxItems()
+
+ Dim myNameSpace As Outlook.NameSpace
+ Dim myInbox As Outlook.Folder
+ Dim myDestFolder As Outlook.Folder
+ Dim myItems As Outlook.Items
+ Dim myItem As Object
+ Dim Filter As String
+ Dim DateDiff As Long
+ 
+ Set myNameSpace = Application.GetNamespace("MAPI")
+ 
+ Set myInbox = myNameSpace.GetDefaultFolder(olFolderInbox)
+ Set myItems = myInbox.Items
+ 
+ Set myDestFolder = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("__3 Years (36 Months)")
+ Set myDestFolderThreeYears = myDestFolder.Folders("Inbox")
+ DateDiff = Now - 30
+ Filter = "[SentOn]  < '" & Month(DateDiff) & _
+ "/" & Day(DateDiff) & _
+ "/" & Year(DateDiff) & "'"
+                         
+ 
+ Set myItem = myItems.Find(Filter)
+ While TypeName(myItem) <> "Nothing"
+ myItem.Move myDestFolderThreeYears
+ Set myItem = myItems.FindNext
+ Wend
+End Sub
+
