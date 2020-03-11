@@ -1,0 +1,47 @@
+Declare Function SetTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long, ByVal uElapse As Long, ByVal lpTimerfunc As Long) As Long
+Declare Function KillTimer Lib "user32" (ByVal hwnd As Long, ByVal nIDEvent As Long) As Long
+
+Public TimerID As Long 'Need a timer ID to eventually turn off the timer. If the timer ID <> 0 then the timer is running
+
+Public Sub ActivateTimer(ByVal nMinutes As Long)
+  nMinutes = nMinutes * 1000 * 60 * 30 'The SetTimer call accepts milliseconds, so convert to minutes
+  If TimerID <> 0 Then Call DeactivateTimer 'Check to see if timer is running before call to SetTimer
+  TimerID = SetTimer(0, 0, nMinutes, AddressOf TriggerTimer)
+  If TimerID = 0 Then
+    MsgBox "The timer failed to activate."
+  End If
+End Sub
+
+Public Sub DeactivateTimer()
+Dim lSuccess As Long
+  lSuccess = KillTimer(0, TimerID)
+  If lSuccess = 0 Then
+    MsgBox "The timer failed to deactivate."
+  Else
+    TimerID = 0
+  End If
+End Sub
+
+Public Sub TriggerTimer(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idevent As Long, ByVal Systime As Long)
+  MsgBox "The TriggerTimer function has been automatically called!"
+  MoveItems
+End Sub
+Sub MoveItems()
+ Dim myNameSpace As Outlook.NameSpace
+ Dim myInbox As Outlook.Folder
+ Dim myDestFolder As Outlook.Folder
+ Dim myItems As Outlook.Items
+ Dim myItem As Object
+ 
+ Set myNameSpace = Application.GetNamespace("MAPI")
+ Set myInbox1 = myNameSpace.GetDefaultFolder(olFolderInbox).Parent
+ Set myInbox = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("Conversation History")
+ Set myItems = myInbox.Items
+ Set myDestFolder = myNameSpace.GetDefaultFolder(olFolderInbox).Parent.Folders("__3 Years (36 Months)")
+ Set myDestFolder2 = myDestFolder.Folders("ConversationHistory")
+ Set myItem = myItems.Find("[SenderName] <> 'Dan Wilson'")
+ While TypeName(myItem) <> "Nothing"
+ myItem.Move myDestFolder2
+ Set myItem = myItems.FindNext
+ Wend
+End Sub
