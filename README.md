@@ -28,7 +28,7 @@ mailbox/
 │   ├── ConversationHistory
 ```
 
-## Steps performed
+## Steps performed (every 1 hour)
 * MoveConversationHistoryItems
 * MoveAlertItems
 * MoveAlertCompassItems
