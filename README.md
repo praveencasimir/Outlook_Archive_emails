@@ -11,6 +11,7 @@
 
 The code caters to below mailbox structure.
 
+```
 mailbox/
 ├── Inbox
 │   ├── Alerts
@@ -25,6 +26,7 @@ mailbox/
 │   ├── Drafts
 │   ├── Sent Items
 │   ├── ConversationHistory
+```
 
 ## Steps performed
 * MoveConversationHistoryItems
