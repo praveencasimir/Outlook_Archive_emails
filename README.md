@@ -29,9 +29,9 @@ mailbox/
 ```
 
 ## Steps performed (every 1 hour)
-* MoveConversationHistoryItems
-* MoveAlertItems
-* MoveAlertCompassItems
-* MoveDeletedItems
-* MoveSentItems
-* MoveInboxItems
+* MoveConversationHistoryItems (all)
+* MoveAlertItems (all)
+* MoveAlertCompassItems (all)
+* MoveDeletedItems (> 30 days)
+* MoveSentItems (> 30 days)
+* MoveInboxItems (> 30 days)
