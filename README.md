@@ -15,7 +15,7 @@ The code caters to below mailbox structure.
 mailbox/
 ├── Inbox
 │   ├── Alerts
-│   │   ├── Alerts-Com2passtest
+│   │   ├── Alerts-test
 │   ├── Junk Email
 │   ├── Scanned
 ├── Conversation History
@@ -31,7 +31,7 @@ mailbox/
 ## Steps performed (every 1 hour)
 * MoveConversationHistoryItems (all)
 * MoveAlertItems (all)
-* MoveAlertCompassItems (all)
+* MoveAlertTestItems (all)
 * MoveDeletedItems (> 30 days)
 * MoveSentItems (> 30 days)
 * MoveInboxItems (> 30 days)
