@@ -1,5 +1,9 @@
-# OutlookRules
+# Outlook Archive mails
 
+This VBA will help in below scenario.
+Your org enforces your default inbox retention policy to a mininum of 30 or 90 days and if you have to move mails manually to your 3 year or longer retention period folders.
+
+### How To
 * Open `Outlook`
 * Open `Files` Menu ->`Options`->`Customize Ribbon`
 * On the right side enable `Developer` check box -> press `OK`
