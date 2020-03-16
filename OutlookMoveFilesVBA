@@ -26,7 +26,7 @@ Public Sub TriggerTimer(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idevent As
   MsgBox "The TriggerTimer function has been automatically called!"
   MoveConversationHistoryItems
   MoveAlertItems
-  MoveAlertCompassItems
+  MoveAlertTestItems
   MoveDeletedItems
   MoveSentItems
   MoveInboxItems
@@ -75,7 +75,7 @@ Sub MoveAlertItems()
  Wend
 End Sub
 
-Sub MoveAlertCompassItems()
+Sub MoveAlertTestItems()
 
  Dim myNameSpace As Outlook.NameSpace
  Dim myInbox As Outlook.Folder
